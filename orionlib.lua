@@ -1650,6 +1650,47 @@ function OrionLib:MakeWindow(WindowConfig)
 					end;
 				end;
 			end;
+			function SectionFunction:AddSection(SubSectionConfig)
+				return ElementFunction.AddSection(SubSectionConfig, SectionFrame.Holder);
+			end;
+			return SectionFunction;
+		end;
+		function ElementFunction:AddSection(SectionConfig, Parent)
+			SectionConfig.Name = SectionConfig.Name or "Section";
+			local SectionFrame = SetChildren(SetProps(MakeElement("TFrame"), {
+				Size = UDim2.new(1, 0, 0, 0),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Parent = Parent or Container
+			}), {
+				AddThemeObject(SetProps(MakeElement("Label", SectionConfig.Name, 14), {
+					Size = UDim2.new(1, -12, 0, 16),
+					Position = UDim2.new(0, 0, 0, 3),
+					Font = Enum.Font.GothamSemibold
+				}), "TextDark"),
+				SetChildren(SetProps(MakeElement("TFrame"), {
+					AnchorPoint = Vector2.new(0, 0),
+					Size = UDim2.new(1, 0, 1, -24),
+					Position = UDim2.new(0, 0, 0, 23),
+					Name = "Holder"
+				}), {
+					MakeElement("List", 0, 6)
+				})
+			});
+			AddConnection(SectionFrame.Holder.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
+				SectionFrame.Size = UDim2.new(1, 0, 0, SectionFrame.Holder.UIListLayout.AbsoluteContentSize.Y + 31);
+				SectionFrame.Holder.Size = UDim2.new(1, 0, 0, SectionFrame.Holder.UIListLayout.AbsoluteContentSize.Y);
+			end);
+			local SectionFunction = {};
+			for i, v in next, GetElements(SectionFrame.Holder) do
+				SectionFunction[i] = v;
+			end;
+			function SectionFunction:Clear()
+				for _, child in ipairs(SectionFrame.Holder:GetChildren()) do
+					if child:IsA("GuiObject") then
+						child:Destroy();
+					end;
+				end;
+			end;
 			return SectionFunction;
 		end;
 		for i, v in next, GetElements(Container) do
