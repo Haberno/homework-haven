@@ -1078,7 +1078,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					Dropdown.Value = "...";
 				end;
 				local DropdownList = MakeElement("List");
-				local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(40, 40, 40), 4), {
+				local DropdownContainer = AddThemeObject(SetProps(SetChildren(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 4), {
 					DropdownList
 				}), {
 					Parent = ItemParent,
@@ -1651,7 +1651,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end;
 			end;
 			function SectionFunction:AddSection(SubSectionConfig)
-				return ElementFunction.AddSection(SubSectionConfig, SectionFrame.Holder);
+				return ElementFunction:AddSection(SubSectionConfig, SectionFrame.Holder);
 			end;
 			return SectionFunction;
 		end;
